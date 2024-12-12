@@ -28,7 +28,7 @@ export const ChatDrawer: React.FC<DrawerProps> = ({
   return (
     <div
       className={clsx(
-        'fixed flex flex-col top-0 right-0 w-[600px] h-screen bg-gray-900 z-50 flex duration-200 py-4 px-10',
+        'fixed flex-col top-0 right-0 w-[600px] h-screen bg-gray-900 z-50 flex duration-200 py-4 px-10',
         isDrawerOn ? 'translate-x-0' : 'translate-x-[600px]'
       )}
     >

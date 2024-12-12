@@ -1,32 +1,54 @@
+'use client';
+
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
+import Cookies from 'js-cookie';
 import { Icon } from '@iconify/react';
+import { io, Socket } from 'socket.io-client';
+import {
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from '@/modules/room.interface';
+import { PlayerCard } from '@/components/cards/PlayerCard';
+import { ChatDrawer } from '@/components/drawer/ChatDrawer';
 
-interface CardProps {
-  data?: {
-    name: string;
-    image: string;
-  };
-}
-
-const PlayerCard: React.FC<CardProps> = ({ data }) => {
-  return (
-    <div className='flex items-center gap-4'>
-      <Image
-        src={data?.image || '/images/avatar.jpg'}
-        height={100}
-        width={100}
-        alt='avatar'
-        className='rounded-full h-12 w-12'
-      />
-      <span className='whitespace-nowrap'>
-        {data?.name || 'Nyx Frostsmith'}
-      </span>
-    </div>
-  );
-};
+const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+  process.env.NEXT_PUBLIC_SOCKET_URL
+);
 
 const Room = () => {
+  const [isDrawerOn, setIsDrawerOn] = useState(false);
+  // const [user, setUser] = useState<string | undefined>('');
+  // const [isConnect, setIsConnect] = useState(false);
+  // const userRef = useRef<HTMLInputElement>(null);
+
+  // const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const username = userRef.current?.value || '';
+  //   Cookies.set('user', username);
+  //   setUser(username);
+  //   console.log('submitted', username);
+  // };
+
+  // useEffect(() => {
+  //   setUser(Cookies.get('user'));
+  // }, []);
+
+  // useEffect(() => {
+  //   socket.on('connect', () => {
+  //     setIsConnect(true);
+  //   });
+
+  //   return () => {
+  //     socket.off('connect');
+  //   };
+  // }, []);
+
+  const handleChatDrawer = () => {
+    setIsDrawerOn(!isDrawerOn);
+  };
+
   return (
     <main className='w-futo overflow-x-hidden h-full'>
       <section className='relative w-screen h-screen flex flex-col'>
@@ -101,6 +123,23 @@ const Room = () => {
             </div>
           </div>
         </div>
+
+        {/* Floating Button */}
+        <div
+          className='fixed right-0 h-full items-center flex '
+          onClick={handleChatDrawer}
+        >
+          <div className='group hover:opacity-100 opacity-75 duration-100 hover:duration-100 flex items-center hover:cursor-pointer'>
+            <span className='group-hover:block hidden mr-2'>Chat</span>
+            <Icon icon='bxs:left-arrow' className='w-6 h-auto' />
+            <div className='w-1 h-16 bg-white opacity-80'></div>
+          </div>
+        </div>
+      </section>
+
+      {/* Chat Drawer */}
+      <section>
+        <ChatDrawer isDrawerOn={isDrawerOn} handleDrawer={handleChatDrawer} />
       </section>
     </main>
   );

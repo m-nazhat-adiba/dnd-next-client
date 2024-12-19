@@ -17,7 +17,7 @@ export const ChatBubble: React.FC<ChatProps> = ({
         <span>{username}</span>
         <div className='flex items-end gap-2'>
           <span className='text-right text-xs text-gray-400'>19:20</span>
-          <span className='flex max-w-[80%] w-fit bg-blue-800 text-white rounded-b-md rounded-tr-md p-2 px-4'>
+          <span className='flex max-w-[80%] w-fit bg-blue-800 text-white rounded-b-md rounded-tl-md p-2 px-4'>
             {message}
           </span>
         </div>
@@ -29,7 +29,7 @@ export const ChatBubble: React.FC<ChatProps> = ({
         <span>{username}</span>
         <div className='flex items-end gap-2'>
           <span className='text-xs text-right text-gray-400'>19:08</span>
-          <span className='flex max-w-[80%] w-fit bg-gray-500 text-white rounded-b-md rounded-tr-md py-2 px-4'>
+          <span className='flex max-w-[80%] w-fit bg-gray-500 text-white rounded-b-md rounded-tl-md py-2 px-4'>
             {message}
           </span>
         </div>

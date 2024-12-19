@@ -79,7 +79,7 @@ export const MessageTextArea: React.FC<TextAreaProps> = ({
         <textarea
           id='chat'
           rows={1}
-          className='block mr-4 p-2.5 w-full text-sm text-gray-200 bg-gray-700 rounded-lg outline-none'
+          className='block mr-4 p-2.5 w-full text-sm text-gray-200 bg-gray-700 rounded-lg outline-none resize-none'
           placeholder='Your message...'
         ></textarea>
         <button

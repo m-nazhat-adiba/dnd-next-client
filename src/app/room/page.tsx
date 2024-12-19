@@ -13,12 +13,13 @@ import {
 import { PlayerCard } from '@/components/cards/PlayerCard';
 import { ChatDrawer } from '@/components/drawer/ChatDrawer';
 
-const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
-  process.env.NEXT_PUBLIC_SOCKET_URL
-);
+// const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+//   process.env.NEXT_PUBLIC_SOCKET_URL
+// );
 
 const Room = () => {
   const [isDrawerOn, setIsDrawerOn] = useState(false);
+  const drawerContainer = useRef<HTMLDivElement>(null);
   // const [user, setUser] = useState<string | undefined>('');
   // const [isConnect, setIsConnect] = useState(false);
   // const userRef = useRef<HTMLInputElement>(null);
@@ -48,6 +49,25 @@ const Room = () => {
   const handleChatDrawer = () => {
     setIsDrawerOn(!isDrawerOn);
   };
+
+  const handleClickOutsideDrawer = (event: MouseEvent) => {
+    if (
+      drawerContainer.current &&
+      !drawerContainer.current.contains(event.target as Node)
+    ) {
+      setIsDrawerOn(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isDrawerOn) {
+      document.addEventListener('mousedown', handleClickOutsideDrawer);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutsideDrawer);
+    };
+  }, [isDrawerOn]);
 
   return (
     <main className='w-futo overflow-x-hidden h-full'>
@@ -131,16 +151,20 @@ const Room = () => {
         >
           <div className='group hover:opacity-100 opacity-75 duration-100 hover:duration-100 flex items-center hover:cursor-pointer'>
             <span className='group-hover:block hidden mr-2'>Chat</span>
-            <Icon icon='bxs:left-arrow' className='w-6 h-auto' />
-            <div className='w-1 h-16 bg-white opacity-80'></div>
+            <Icon icon='bxs:left-arrow' className='w-8 h-auto' />
+            <div className='w-2 h-20 bg-white opacity-80'></div>
           </div>
         </div>
       </section>
 
       {/* Chat Drawer */}
-      <section>
-        <ChatDrawer isDrawerOn={isDrawerOn} handleDrawer={handleChatDrawer} />
-      </section>
+      <div className='relative z-10'>
+        <ChatDrawer
+          drawerRef={drawerContainer}
+          isDrawerOn={isDrawerOn}
+          handleDrawer={handleChatDrawer}
+        />
+      </div>
     </main>
   );
 };
